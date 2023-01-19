@@ -1,23 +1,36 @@
-import logo from './logo.svg';
-import './App.css';
+import Button from "./Button";
+import styles from "./App.module.css";
+import { useEffect, useState } from "react";
 
 function App() {
+  const [toDo, setTodo] = useState("");
+  const [toDos, setTodos] = useState([]);
+
+  const onChange = (e) => setTodo(e.target.value)
+  const onSubmit = (e) => {
+    e.preventDefault();
+    
+    if( toDo === "" ){
+      return;
+    }
+    setTodos((currentArr) => [toDo, ...currentArr])
+    setTodo("");
+  };
+  //console.log(toDos)
+
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
+    <div>
+      <h1>My To Dos❤ ({toDos.length})</h1>
+      <form onSubmit={onSubmit}>
+        <input type="text" placeholder="to do..." onChange={onChange} value={toDo} />
+        <button>Add To do</button>
+      </form>
+      <hr />
+      <ul>
+        {toDos.map((item, idx) => (
+          <li key={idx}>{item}</li> 
+        ))}
+      </ul>
     </div>
   );
 }
